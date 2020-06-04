@@ -24,9 +24,8 @@ node {
     //}
     
     stage('sonar-scanner') {
-        withCredentials([string(credentialsId: 'sonar')]) {
-        sh "${sonarqubeScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=nodejsstarter -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=sonar -Dsonar.sources=complete/src/main/ -Dsonar.tests=complete/src/test/ -Dsonar.language=java -Dsonar.java.binaries=."
-      }
+        withCredentials('http://localhost:9000', 'sonar') {
+        sh "./bin/sonar-scanner -e -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=mvn -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=sonar -Dsonar.sources=complete/src/main/ -Dsonar.tests=complete/src/test/
     }  
     stage('Push image') {
         /* Finally, we'll push the image with two tags:
