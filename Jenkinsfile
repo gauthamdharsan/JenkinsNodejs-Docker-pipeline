@@ -23,8 +23,8 @@ node {
         //}
     //}
     
-    stage('sonar-scanner') {
-        def sonarqubeScannerHome = tool name: 'SonarQubeScanner'
+    stage('sonarqube analysis') {
+        def sonarqubeScannerHome = tool name: 'sonarqube'
           
     }  
     stage('Push image') {
