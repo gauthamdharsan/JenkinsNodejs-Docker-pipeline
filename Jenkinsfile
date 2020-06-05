@@ -24,7 +24,7 @@ node {
     //}
     
     stage('sonar-scanner') {
-        def sonarqubeScannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        def sonarqubeScannerHome = tool name: 'SonarQubeScanner'
           
     }  
     stage('Push image') {
