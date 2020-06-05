@@ -24,14 +24,11 @@ node {
     //}
     
     stage('sonar-scanner') {
-        withCredentials('http://localhost:9000', 'sonar') {
-        sh "./bin/sonar-scanner -e -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=mvn -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=sonar -Dsonar.sources=complete/src/main/ -Dsonar.tests=complete/src/test/
+        def sonarqubeScannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        sh "${sonarqubeScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=http://localhost:9000" -Dsonar.login=${sonarLogin} -Dsonar.projectName=mvn -Dsonar.projectVersion=${env.BUILD_NUMBER}
     }  
     stage('Push image') {
-        /* Finally, we'll push the image with two tags:
-         * First, the incremental build number from Jenkins
-         * Second, the 'latest' tag.
-         * Pushing multiple tags is cheap, as all the layers are reused. */
+        
         docker.withRegistry('https://registry.hub.docker.com', 'docker') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
